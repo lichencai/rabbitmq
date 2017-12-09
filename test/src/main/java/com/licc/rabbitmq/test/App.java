@@ -3,6 +3,8 @@ package com.licc.rabbitmq.test;
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
 
+import com.licc.rabbitmq.common.ConstantValue;
+import com.licc.rabbitmq.util.RabbitmqUtil;
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -20,27 +22,17 @@ public class App {
 	static boolean isBreak = false;
 
 	public static void main(String[] args) {
-		System.out.println("Hello World!");
-
-		ConnectionFactory factory = new ConnectionFactory();
-		factory.setUsername(ConstantValue.USER);
-		factory.setPassword(ConstantValue.PASS);
-		factory.setHost(ConstantValue.IP);
-		factory.setVirtualHost(ConstantValue.HOST);
-		factory.setPort(5672);
 		try {
-			Connection connection = factory.newConnection();
+			Connection connection = RabbitmqUtil.createConnection();
 			Channel channel = connection.createChannel();
 			
 			channel.queueDeclare(QUEUE_NAME, false, false, false, null);
 			
-			
 			String message = "Hello World!";
-			
-			
 			
 			System.out.println(" [x] Sent '" + message + "'");
 			
+			//  订阅的方式获取数据
 			Consumer consumer = new DefaultConsumer(channel) {
 				@Override
 				public void handleDelivery(String consumerTag, Envelope envelope, AMQP.BasicProperties properties, byte[] body) throws IOException {
