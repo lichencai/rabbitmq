@@ -15,11 +15,11 @@ public class ConsumerMsg {
 		Connection connection = RabbitmqUtil.createConnection();
 		Channel channel = connection.createChannel();
 		
-		String exchangeName = "testExchange";
-		String queueName = "testqueue";
+		String exchangeName = "testExchange1";
+		String queueName = "testqueue1";
 		
 		//  声明一个queue
-		channel.queueDeclare(queueName, false, false, false, null);
+		channel.queueDeclare(queueName, true, false, false, null);
 		//  声明一个Binding 绑定exchange到queue的路径
 		String routingKey = "routingKey";
 		channel.queueBind(queueName, exchangeName, routingKey);
